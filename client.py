@@ -1,25 +1,27 @@
+from collections import deque
+
 from flask import Flask, request, jsonify
 
 
 app = Flask(__name__)
-messages = []
+messages = deque()
 
 
 @app.route('/health/', methods=['GET'])
 def test():
-    return "Healthy"
+    return 'Healthy'
 
 
-@app.route('/replicate_message/', methods=['POST'])
+@app.route('/message/', methods=['POST'])
 def replicate_message():
     message = request.json.get('message')
     messages.append(message)
-    return jsonify(message)
+    return 'replicated'
 
 
-@app.route('/list_messages/', methods=['GET'])
+@app.route('/messages/', methods=['GET'])
 def list_messages():
-    return jsonify(messages)
+    return jsonify(list(messages))
 
 
 if __name__ == '__main__':
