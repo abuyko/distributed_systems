@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 messages = deque()
 
-client_ports = ['8009', '8010']
+client_ports = ['8009']
 
 
 @app.route('/health/', methods=['GET'])
@@ -20,7 +20,7 @@ def add_message():
     messages.append(message)
 
     for port in client_ports:
-        url = f'http://localhost:{port}/replicate_message'
+        url = f'http://client:{port}/message'
         r = requests.post(
             url,
             json={'message': message},
